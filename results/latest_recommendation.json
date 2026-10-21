@@ -1,0 +1,10 @@
+{
+  "timestamp": "2026-03-05 23:55:00",
+  "horizon_min": 15,
+  "current_memory_mb": 21125.5,
+  "predicted_memory_mb": 20824.2,
+  "predicted_upper_mb": 21258.3,
+  "instance_mb": 4096.0,
+  "target_util": 0.85,
+  "recommended_instances": 7
+}

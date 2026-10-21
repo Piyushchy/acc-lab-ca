@@ -1,0 +1,28 @@
+{
+  "best_model": "MLP (64-32)",
+  "horizon_min": 15,
+  "q95_coverage_%": 90.78869923484403,
+  "static_instances": 12,
+  "test_rows": 3398,
+  "diagnostics": {
+    "hybrid_fallback_steps_%": 0.0,
+    "hybrid_guard_steps_%": 0.02942907592701589,
+    "shock_hybrid_fallback_steps_%": 0.6180105944673336,
+    "shock_hybrid_guard_steps_%": 0.20600353148911124,
+    "shock_forecast_MAPE_%": 1.1651564722300378
+  },
+  "config": {
+    "instance_mb": 4096.0,
+    "price_per_hour": 0.0416,
+    "boot_steps": 3,
+    "step_minutes": 5,
+    "min_instances": 2,
+    "max_instances": 80,
+    "target_util": 0.85,
+    "scale_in_window": 6,
+    "p_idle_w": 45.0,
+    "p_max_w": 110.0,
+    "base_latency_ms": 40.0,
+    "timeout_latency_ms": 2000.0
+  }
+}
