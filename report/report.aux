@@ -1,0 +1,103 @@
+\relax 
+\providecommand\hyper@newdestlabel[2]{}
+\providecommand\HyField@AuxAddToFields[1]{}
+\providecommand\HyField@AuxAddToCoFields[2]{}
+\citation{armbrust2010}
+\citation{awsasg}
+\citation{lorido2014}
+\citation{roy2011,calheiros2015,cortez2017}
+\citation{hyndman2018}
+\@writefile{toc}{\contentsline {section}{\numberline {1}Introduction and Problem Statement}{2}{section.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Problem.}{2}{section*.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Scope and honesty statement.}{2}{section*.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {2}Input Data and Features}{2}{section.2}\protected@file@percent }
+\newlabel{sec:data}{{2}{2}{Input Data and Features}{section.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.1}Workload data}{2}{subsection.2.1}\protected@file@percent }
+\citation{hoerl1970}
+\citation{breiman2001}
+\citation{friedman2001}
+\citation{rumelhart1986}
+\citation{pedregosa2011}
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Synthetic workload: request rate, CPU and memory demand, with the train/validation/test split.}}{3}{figure.caption.4}\protected@file@percent }
+\providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
+\newlabel{fig:workload}{{1}{3}{Synthetic workload: request rate, CPU and memory demand, with the train/validation/test split}{figure.caption.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2}Features}{3}{subsection.2.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.3}Target}{3}{subsection.2.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {3}Algorithm Selection and Prediction Horizon}{3}{section.3}\protected@file@percent }
+\newlabel{sec:algo}{{3}{3}{Algorithm Selection and Prediction Horizon}{section.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}Candidate models}{3}{subsection.3.1}\protected@file@percent }
+\citation{koenker1978}
+\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Forecast accuracy on the held-out test period (15-minute horizon).}}{4}{table.caption.5}\protected@file@percent }
+\newlabel{tab:models}{{1}{4}{Forecast accuracy on the held-out test period (15-minute horizon)}{table.caption.5}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Model comparison on the test set.}}{4}{figure.caption.6}\protected@file@percent }
+\newlabel{fig:modelcmp}{{2}{4}{Model comparison on the test set}{figure.caption.6}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Forecast versus actual memory over part of the test period.}}{4}{figure.caption.7}\protected@file@percent }
+\newlabel{fig:fva}{{3}{4}{Forecast versus actual memory over part of the test period}{figure.caption.7}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Upper-bound model}{5}{subsection.3.2}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Permutation feature importance.}}{5}{figure.caption.8}\protected@file@percent }
+\newlabel{fig:imp}{{4}{5}{Permutation feature importance}{figure.caption.8}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3}Prediction horizon}{5}{subsection.3.3}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces Effect of the prediction horizon (hybrid policy).}}{5}{table.caption.9}\protected@file@percent }
+\newlabel{tab:horizon}{{2}{5}{Effect of the prediction horizon (hybrid policy)}{table.caption.9}{}}
+\citation{barroso2007}
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Horizon sweep: forecast error and policy cost.}}{6}{figure.caption.10}\protected@file@percent }
+\newlabel{fig:horizon}{{5}{6}{Horizon sweep: forecast error and policy cost}{figure.caption.10}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {4}Resource Allocation and Auto-Scaling Mechanism}{6}{section.4}\protected@file@percent }
+\newlabel{sec:design}{{4}{6}{Resource Allocation and Auto-Scaling Mechanism}{section.4}{}}
+\@writefile{toc}{\contentsline {paragraph}{Policies compared.}{6}{section*.11}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {5}Evaluation Methodology}{6}{section.5}\protected@file@percent }
+\newlabel{sec:metrics}{{5}{6}{Evaluation Methodology}{section.5}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {6}Results}{7}{section.6}\protected@file@percent }
+\newlabel{sec:results}{{6}{7}{Results}{section.6}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces Policy comparison on the test period (85\,\% sizing target).}}{7}{table.caption.12}\protected@file@percent }
+\newlabel{tab:policies}{{3}{7}{Policy comparison on the test period (85\,\% sizing target)}{table.caption.12}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces Utilisation, violations, latency, cost and energy by policy.}}{7}{figure.caption.13}\protected@file@percent }
+\newlabel{fig:policy}{{6}{7}{Utilisation, violations, latency, cost and energy by policy}{figure.caption.13}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces Capacity versus demand over time for the compared policies.}}{8}{figure.caption.14}\protected@file@percent }
+\newlabel{fig:timeline}{{7}{8}{Capacity versus demand over time for the compared policies}{figure.caption.14}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.1}Where prediction matters: tighter packing}{8}{subsection.6.1}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {4}{\ignorespaces Sizing-target sweep, normal workload.}}{8}{table.caption.15}\protected@file@percent }
+\newlabel{tab:sweep}{{4}{8}{Sizing-target sweep, normal workload}{table.caption.15}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces Sizing-target sweep.}}{9}{figure.caption.16}\protected@file@percent }
+\newlabel{fig:sweep}{{8}{9}{Sizing-target sweep}{figure.caption.16}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {7}What Happens When the Prediction Is Wrong?}{9}{section.7}\protected@file@percent }
+\newlabel{sec:wrong}{{7}{9}{What Happens When the Prediction Is Wrong?}{section.7}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.1}Systematic bias}{9}{subsection.7.1}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {5}{\ignorespaces Effect of a multiplicative forecast bias (factor applied to the forecast).}}{9}{table.caption.17}\protected@file@percent }
+\newlabel{tab:bias}{{5}{9}{Effect of a multiplicative forecast bias (factor applied to the forecast)}{table.caption.17}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.2}Random noise}{9}{subsection.7.2}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {9}{\ignorespaces Wrong-prediction experiments: bias and noise.}}{10}{figure.caption.18}\protected@file@percent }
+\newlabel{fig:wrong}{{9}{10}{Wrong-prediction experiments: bias and noise}{figure.caption.18}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.3}Unforeseen surges}{10}{subsection.7.3}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {6}{\ignorespaces Surge scenario (unforeseeable memory spikes).}}{10}{table.caption.19}\protected@file@percent }
+\newlabel{tab:shock}{{6}{10}{Surge scenario (unforeseeable memory spikes)}{table.caption.19}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {10}{\ignorespaces Surge scenario: demand and capacity.}}{11}{figure.caption.20}\protected@file@percent }
+\newlabel{fig:shock}{{10}{11}{Surge scenario: demand and capacity}{figure.caption.20}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {7}{\ignorespaces Violations (\% of steps) versus instance launch delay in the surge scenario.}}{11}{table.caption.21}\protected@file@percent }
+\newlabel{tab:delay}{{7}{11}{Violations (\% of steps) versus instance launch delay in the surge scenario}{table.caption.21}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {11}{\ignorespaces Launch-delay sweep in the surge scenario.}}{11}{figure.caption.22}\protected@file@percent }
+\newlabel{fig:delay}{{11}{11}{Launch-delay sweep in the surge scenario}{figure.caption.22}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.4}Drift fallback}{11}{subsection.7.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.5}Mitigations}{12}{subsection.7.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {8}Cloud Demonstration}{12}{section.8}\protected@file@percent }
+\newlabel{sec:cloud}{{8}{12}{Cloud Demonstration}{section.8}{}}
+\@writefile{toc}{\contentsline {paragraph}{Status.}{12}{section*.23}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {9}Limitations}{12}{section.9}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {10}Conclusion}{12}{section.10}\protected@file@percent }
+\bibstyle{unsrtnat}
+\bibdata{references}
+\bibcite{armbrust2010}{{1}{2010}{{Armbrust et~al.}}{{Armbrust, Fox, Griffith, Joseph, Katz, Konwinski, Lee, Patterson, Rabkin, Stoica, and Zaharia}}}
+\bibcite{awsasg}{{2}{2026}{{Amazon Web Services}}{{}}}
+\bibcite{lorido2014}{{3}{2014}{{Lorido-Botran et~al.}}{{Lorido-Botran, Miguel-Alonso, and Lozano}}}
+\bibcite{roy2011}{{4}{2011}{{Roy et~al.}}{{Roy, Dubey, and Gokhale}}}
+\bibcite{calheiros2015}{{5}{2015}{{Calheiros et~al.}}{{Calheiros, Masoumi, Ranjan, and Buyya}}}
+\bibcite{cortez2017}{{6}{2017}{{Cortez et~al.}}{{Cortez, Bonde, Muzio, Russinovich, Fontoura, and Bianchini}}}
+\bibcite{hyndman2018}{{7}{2018}{{Hyndman and Athanasopoulos}}{{}}}
+\bibcite{hoerl1970}{{8}{1970}{{Hoerl and Kennard}}{{}}}
+\bibcite{breiman2001}{{9}{2001}{{Breiman}}{{}}}
+\bibcite{friedman2001}{{10}{2001}{{Friedman}}{{}}}
+\bibcite{rumelhart1986}{{11}{1986}{{Rumelhart et~al.}}{{Rumelhart, Hinton, and Williams}}}
+\bibcite{pedregosa2011}{{12}{2011}{{Pedregosa et~al.}}{{Pedregosa, Varoquaux, Gramfort, Michel, Thirion, Grisel, Blondel, Prettenhofer, Weiss, Dubourg, et~al.}}}
+\bibcite{koenker1978}{{13}{1978}{{Koenker and Bassett}}{{}}}
+\bibcite{barroso2007}{{14}{2007}{{Barroso and H{\"o}lzle}}{{}}}
+\gdef \@abspage@last{14}

@@ -1,0 +1,26 @@
+\contentsline {section}{\numberline {1}Introduction and Problem Statement}{2}{section.1}%
+\contentsline {paragraph}{Problem.}{2}{section*.2}%
+\contentsline {paragraph}{Scope and honesty statement.}{2}{section*.3}%
+\contentsline {section}{\numberline {2}Input Data and Features}{2}{section.2}%
+\contentsline {subsection}{\numberline {2.1}Workload data}{2}{subsection.2.1}%
+\contentsline {subsection}{\numberline {2.2}Features}{3}{subsection.2.2}%
+\contentsline {subsection}{\numberline {2.3}Target}{3}{subsection.2.3}%
+\contentsline {section}{\numberline {3}Algorithm Selection and Prediction Horizon}{3}{section.3}%
+\contentsline {subsection}{\numberline {3.1}Candidate models}{3}{subsection.3.1}%
+\contentsline {subsection}{\numberline {3.2}Upper-bound model}{5}{subsection.3.2}%
+\contentsline {subsection}{\numberline {3.3}Prediction horizon}{5}{subsection.3.3}%
+\contentsline {section}{\numberline {4}Resource Allocation and Auto-Scaling Mechanism}{6}{section.4}%
+\contentsline {paragraph}{Policies compared.}{6}{section*.11}%
+\contentsline {section}{\numberline {5}Evaluation Methodology}{6}{section.5}%
+\contentsline {section}{\numberline {6}Results}{7}{section.6}%
+\contentsline {subsection}{\numberline {6.1}Where prediction matters: tighter packing}{8}{subsection.6.1}%
+\contentsline {section}{\numberline {7}What Happens When the Prediction Is Wrong?}{9}{section.7}%
+\contentsline {subsection}{\numberline {7.1}Systematic bias}{9}{subsection.7.1}%
+\contentsline {subsection}{\numberline {7.2}Random noise}{9}{subsection.7.2}%
+\contentsline {subsection}{\numberline {7.3}Unforeseen surges}{10}{subsection.7.3}%
+\contentsline {subsection}{\numberline {7.4}Drift fallback}{11}{subsection.7.4}%
+\contentsline {subsection}{\numberline {7.5}Mitigations}{12}{subsection.7.5}%
+\contentsline {section}{\numberline {8}Cloud Demonstration}{12}{section.8}%
+\contentsline {paragraph}{Status.}{12}{section*.23}%
+\contentsline {section}{\numberline {9}Limitations}{12}{section.9}%
+\contentsline {section}{\numberline {10}Conclusion}{12}{section.10}%

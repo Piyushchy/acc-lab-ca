@@ -1,0 +1,101 @@
+\begin{thebibliography}{14}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Armbrust et~al.(2010)Armbrust, Fox, Griffith, Joseph, Katz, Konwinski,
+  Lee, Patterson, Rabkin, Stoica, and Zaharia]{armbrust2010}
+Michael Armbrust, Armando Fox, Rean Griffith, Anthony~D. Joseph, Randy Katz,
+  Andy Konwinski, Gunho Lee, David Patterson, Ariel Rabkin, Ion Stoica, and
+  Matei Zaharia.
+\newblock A view of cloud computing.
+\newblock \emph{Communications of the ACM}, 53\penalty0 (4):\penalty0 50--58,
+  2010.
+
+\bibitem[{Amazon Web Services}(2026)]{awsasg}
+{Amazon Web Services}.
+\newblock Amazon {EC2} {Auto Scaling} user guide: Target tracking and
+  predictive scaling policies.
+\newblock \url{https://docs.aws.amazon.com/autoscaling/ec2/userguide/}, 2026.
+\newblock Accessed October 2026.
+
+\bibitem[Lorido-Botran et~al.(2014)Lorido-Botran, Miguel-Alonso, and
+  Lozano]{lorido2014}
+Tania Lorido-Botran, Jose Miguel-Alonso, and Jose~A. Lozano.
+\newblock A review of auto-scaling techniques for elastic applications in cloud
+  environments.
+\newblock \emph{Journal of Grid Computing}, 12\penalty0 (4):\penalty0 559--592,
+  2014.
+
+\bibitem[Roy et~al.(2011)Roy, Dubey, and Gokhale]{roy2011}
+Nilabja Roy, Abhishek Dubey, and Aniruddha Gokhale.
+\newblock Efficient autoscaling in the cloud using predictive models for
+  workload forecasting.
+\newblock In \emph{Proc. IEEE 4th International Conference on Cloud Computing
+  (CLOUD)}, pages 500--507, 2011.
+
+\bibitem[Calheiros et~al.(2015)Calheiros, Masoumi, Ranjan, and
+  Buyya]{calheiros2015}
+Rodrigo~N. Calheiros, Enayat Masoumi, Rajiv Ranjan, and Rajkumar Buyya.
+\newblock Workload prediction using {ARIMA} model and its impact on cloud
+  applications' {QoS}.
+\newblock \emph{IEEE Transactions on Cloud Computing}, 3\penalty0 (4):\penalty0
+  449--458, 2015.
+
+\bibitem[Cortez et~al.(2017)Cortez, Bonde, Muzio, Russinovich, Fontoura, and
+  Bianchini]{cortez2017}
+Eli Cortez, Anand Bonde, Alexandre Muzio, Mark Russinovich, Marcus Fontoura,
+  and Ricardo Bianchini.
+\newblock Resource central: Understanding and predicting workloads for improved
+  resource management in large cloud platforms.
+\newblock In \emph{Proc. 26th ACM Symposium on Operating Systems Principles
+  (SOSP)}, pages 153--167, 2017.
+
+\bibitem[Hyndman and Athanasopoulos(2018)]{hyndman2018}
+Rob~J. Hyndman and George Athanasopoulos.
+\newblock \emph{Forecasting: Principles and Practice}.
+\newblock OTexts, Melbourne, 2nd edition, 2018.
+
+\bibitem[Hoerl and Kennard(1970)]{hoerl1970}
+Arthur~E. Hoerl and Robert~W. Kennard.
+\newblock Ridge regression: Biased estimation for nonorthogonal problems.
+\newblock \emph{Technometrics}, 12\penalty0 (1):\penalty0 55--67, 1970.
+
+\bibitem[Breiman(2001)]{breiman2001}
+Leo Breiman.
+\newblock Random forests.
+\newblock \emph{Machine Learning}, 45\penalty0 (1):\penalty0 5--32, 2001.
+
+\bibitem[Friedman(2001)]{friedman2001}
+Jerome~H. Friedman.
+\newblock Greedy function approximation: A gradient boosting machine.
+\newblock \emph{The Annals of Statistics}, 29\penalty0 (5):\penalty0
+  1189--1232, 2001.
+
+\bibitem[Rumelhart et~al.(1986)Rumelhart, Hinton, and Williams]{rumelhart1986}
+David~E. Rumelhart, Geoffrey~E. Hinton, and Ronald~J. Williams.
+\newblock Learning representations by back-propagating errors.
+\newblock \emph{Nature}, 323\penalty0 (6088):\penalty0 533--536, 1986.
+
+\bibitem[Pedregosa et~al.(2011)Pedregosa, Varoquaux, Gramfort, Michel, Thirion,
+  Grisel, Blondel, Prettenhofer, Weiss, Dubourg, et~al.]{pedregosa2011}
+Fabian Pedregosa, Ga{\"e}l Varoquaux, Alexandre Gramfort, Vincent Michel,
+  Bertrand Thirion, Olivier Grisel, Mathieu Blondel, Peter Prettenhofer, Ron
+  Weiss, Vincent Dubourg, et~al.
+\newblock Scikit-learn: Machine learning in {Python}.
+\newblock \emph{Journal of Machine Learning Research}, 12:\penalty0 2825--2830,
+  2011.
+
+\bibitem[Koenker and Bassett(1978)]{koenker1978}
+Roger Koenker and Gilbert Bassett.
+\newblock Regression quantiles.
+\newblock \emph{Econometrica}, 46\penalty0 (1):\penalty0 33--50, 1978.
+
+\bibitem[Barroso and H{\"o}lzle(2007)]{barroso2007}
+Luiz~Andr{\'e} Barroso and Urs H{\"o}lzle.
+\newblock The case for energy-proportional computing.
+\newblock \emph{IEEE Computer}, 40\penalty0 (12):\penalty0 33--37, 2007.
+
+\end{thebibliography}

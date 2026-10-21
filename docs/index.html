@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ML-Based Cloud Resource Manager</title>
+<style>
+:root{--bg:#fff;--fg:#1c2430;--mut:#5b6675;--acc:#1f5fbf;--card:#f4f6f9;--bd:#dde2ea}
+@media(prefers-color-scheme:dark){:root{--bg:#12161c;--fg:#e6eaf0;--mut:#9aa6b6;--acc:#6ea8ff;--card:#1b212a;--bd:#2b3340}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+main{max-width:920px;margin:0 auto;padding:40px 16px 64px}
+h1{font-size:2rem;line-height:1.2;margin:0 0 6px}h2{margin:40px 0 10px;font-size:1.35rem}
+.sub{color:var(--mut)}a{color:var(--acc)}
+.btns{display:flex;flex-wrap:wrap;gap:10px;margin:20px 0}
+.btns a{padding:9px 16px;border:1px solid var(--acc);border-radius:8px;text-decoration:none;font-weight:600}
+.btns a.p{background:var(--acc);color:#fff}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px}
+.k{background:var(--card);border:1px solid var(--bd);border-radius:10px;padding:14px}
+.k b{display:block;font-size:1.5rem}.k span{color:var(--mut);font-size:.9rem}
+table{border-collapse:collapse;width:100%;font-size:.92rem;display:block;overflow-x:auto}
+th,td{padding:7px 10px;border-bottom:1px solid var(--bd);text-align:right;white-space:nowrap}th:first-child,td:first-child{text-align:left}
+figure{margin:18px 0}figure img{width:100%;height:auto;border:1px solid var(--bd);border-radius:8px;background:#fff}
+figcaption{color:var(--mut);font-size:.9rem;margin-top:4px}
+.note{background:var(--card);border-left:4px solid var(--acc);padding:10px 14px;border-radius:6px}
+</style></head><body><main>
+<h1>ML-Based Memory Prediction and Intelligent Cloud Resource Allocation</h1>
+<div class="sub">ACC lab CA &middot; Piyush Chaudhary &middot; Roll No. 16010123234 &middot; K.J. Somaiya College of Engineering</div>
+<div class="btns">
+<a class="p" href="ML_Cloud_Resource_Manager_Report.pdf">Read the report (PDF)</a>
+<a href="https://github.com/Piyushchy/acc-lab-ca">Source code</a>
+<a href="https://github.com/Piyushchy/acc-lab-ca/blob/main/results/RESULTS.md">Full results</a></div>
+
+<p>A resource manager that forecasts a service's memory demand 15 minutes ahead and sizes a VM pool for the forecast. It is compared with static peak provisioning and reactive target tracking on accuracy, utilisation, latency, cost and energy, and stress-tested for the question: <em>what happens when the prediction is wrong?</em></p>
+<p class="note"><b>Scope.</b> The workload is synthetic and the cluster is a simulator with assumed cost and power figures. Absolute numbers show relative differences between policies, not measurements from a live cloud account.</p>
+
+<h2>Headline results</h2>
+<div class="grid">
+<div class="k"><b>1.01 %</b><span>MAPE, MLP forecaster (15 min horizon)</span></div>
+<div class="k"><b>49 %</b><span>lower error than "no change" baseline</span></div>
+<div class="k"><b>50 → 78 %</b><span>average utilisation vs static</span></div>
+<div class="k"><b>−36 % / −21 %</b><span>simulated cost / energy vs static</span></div>
+</div>
+
+<h2>Policy comparison (test period)</h2>
+<table><thead><tr><th>Policy</th><th>Util.</th><th>Mem. exhausted</th><th>p99 latency</th><th>Cost</th><th>Energy</th></tr></thead><tbody>
+<tr><td>Static (peak-sized)</td><td>50.3 %</td><td>0 %</td><td>194 ms</td><td>$141.36</td><td>264.0 kWh</td></tr>
+<tr><td>Reactive</td><td>78.6 %</td><td>0.03 %</td><td>333 ms</td><td>$90.95</td><td>209.5 kWh</td></tr>
+<tr><td>Predictive (mean)</td><td>78.5 %</td><td>0 %</td><td>279 ms</td><td>$90.95</td><td>209.5 kWh</td></tr>
+<tr><td>Hybrid (q95 + safety nets)</td><td>77.0 %</td><td>0 %</td><td>254 ms</td><td>$92.72</td><td>211.4 kWh</td></tr>
+<tr><td>Oracle</td><td>78.5 %</td><td>0 %</td><td>263 ms</td><td>$90.98</td><td>209.5 kWh</td></tr></tbody></table>
+
+<h2>When the prediction is wrong</h2>
+<ul><li><b>Under-prediction is dangerous:</b> a 20 % low forecast leaves memory exhausted in 28.9 % of steps.</li>
+<li><b>Over-prediction only costs money:</b> +40 % forecast raises cost by 37 % with no violations.</li>
+<li><b>Sudden surges:</b> the instance launch delay, not the forecaster, is the binding constraint.</li>
+<li><b>Drift fallback</b> in the hybrid policy removes the bias failure, at a cost premium.</li></ul>
+<figure><img src="figures/07_wrong_predictions.png" alt="Bias and noise experiments"><figcaption>Bias and noise injected into the forecast.</figcaption></figure>
+<figure><img src="figures/06_capacity_timeline.png" alt="Capacity versus demand"><figcaption>Capacity tracking demand under each policy.</figcaption></figure>
+<figure><img src="figures/03_forecast_vs_actual.png" alt="Forecast versus actual"><figcaption>Forecast versus actual memory on the test period.</figcaption></figure>
+<figure><img src="figures/05_policy_comparison.png" alt="Policy comparison"><figcaption>Utilisation, violations, latency, cost and energy by policy.</figcaption></figure>
+</main></body></html>
