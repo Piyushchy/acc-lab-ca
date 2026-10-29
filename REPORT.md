@@ -1,6 +1,6 @@
 # ML-Based Memory Usage Prediction and Intelligent Cloud Resource Allocation
 
-ACC lab CA — Cloud Resource Management · Author: Piyush
+ACC lab CA — Cloud Resource Management · Authors: Piyush Chaudhary (16010123234), Aswin Nambiar (16010123086)
 
 All numbers below come from `python main.py` (seed 42) and are reproduced in `results/RESULTS.md`.
 **Scope note:** the workload is synthetic and the cluster is simulated with assumed cost/power figures; see Section 9.

@@ -1,7 +1,7 @@
 # ML-Based Memory Usage Prediction and Intelligent Cloud Resource Allocation
 
 ACC lab CA — *Cloud Resource Management* project.
-Author: Piyush
+Authors: Piyush Chaudhary (16010123234), Aswin Nambiar (16010123086)
 
 An ML-based cloud resource manager that **forecasts memory demand 15 minutes ahead** and uses the forecast to
 **auto-scale** a pool of VM instances. It is compared against static provisioning and a reactive (target-tracking)
