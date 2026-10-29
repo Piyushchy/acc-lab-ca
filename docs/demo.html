@@ -1,0 +1,547 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ML Cloud Resource Manager – Live Demo</title>
+<style>
+:root{--bg:#fff;--fg:#1c2430;--mut:#5b6675;--acc:#1f5fbf;--card:#f4f6f9;--bd:#dde2ea;--ok:#157a40;--bad:#c0392b;--warn:#a86a00;
+--c-dem:#1c2430;--c-static:#8b95a5;--c-react:#d97706;--c-pm:#1f5fbf;--c-pu:#9333ea;--c-hy:#157a40;--c-or:#0e9aa7;--c-fc:#d97706;--shade:rgba(192,57,43,.16)}
+@media(prefers-color-scheme:dark){:root{--bg:#12161c;--fg:#e6eaf0;--mut:#9aa6b6;--acc:#6ea8ff;--card:#1b212a;--bd:#2b3340;--ok:#4cc67f;--bad:#ff7b6b;--warn:#f0b24a;
+--c-dem:#e6eaf0;--c-static:#7c8798;--c-react:#f0a23b;--c-pm:#6ea8ff;--c-pu:#c08bff;--c-hy:#4cc67f;--c-or:#4fd1d9;--c-fc:#f0a23b;--shade:rgba(255,123,107,.2)}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.55 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+.wrap{max-width:1100px;margin:0 auto;padding:0 16px}
+header.top{padding:28px 0 8px}
+h1{font-size:1.7rem;line-height:1.2;margin:0 0 4px}
+h1 .tag{font-size:.7rem;vertical-align:middle;background:var(--acc);color:#fff;padding:3px 9px;border-radius:99px;margin-left:8px;font-weight:600}
+h2{font-size:1.25rem;margin:26px 0 8px}h3{font-size:1.02rem;margin:22px 0 6px}
+.sub{color:var(--mut);margin:0 0 10px}a{color:var(--acc)}
+.links{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+.links a{padding:6px 12px;border:1px solid var(--acc);border-radius:8px;text-decoration:none;font-weight:600;font-size:.9rem}
+.note{background:var(--card);border-left:4px solid var(--acc);padding:9px 14px;border-radius:6px;color:var(--fg);font-size:.9rem}
+.tabs{display:flex;gap:4px;flex-wrap:wrap;border-bottom:1px solid var(--bd);margin:18px 0 0}
+.tabs button{background:none;border:0;border-bottom:3px solid transparent;color:var(--mut);font:inherit;font-weight:600;padding:10px 14px;cursor:pointer}
+.tabs button[aria-selected=true]{color:var(--acc);border-color:var(--acc)}
+.tabs button:focus-visible,button:focus-visible,select:focus-visible,input:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+section.tab{display:none;padding-bottom:50px}section.tab.on{display:block}
+.panel{background:var(--card);border:1px solid var(--bd);border-radius:10px;padding:12px 14px;margin:14px 0}
+.controls{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px 18px;align-items:end}
+label{display:flex;flex-direction:column;gap:3px;font-size:.82rem;color:var(--mut);font-weight:600}
+label output{color:var(--fg);font-weight:700}
+select,input[type=number]{font:inherit;padding:5px 7px;border:1px solid var(--bd);border-radius:6px;background:var(--bg);color:var(--fg)}
+input[type=range]{width:100%;accent-color:var(--acc)}
+button.b{font:inherit;font-weight:600;padding:7px 13px;border-radius:8px;border:1px solid var(--acc);background:var(--bg);color:var(--acc);cursor:pointer}
+button.b.p{background:var(--acc);color:#fff}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin:14px 0}
+.k{background:var(--card);border:1px solid var(--bd);border-radius:10px;padding:10px 12px}
+.k b{display:block;font-size:1.3rem;line-height:1.25}.k span{color:var(--mut);font-size:.78rem}
+.cw{position:relative}
+canvas{width:100%;height:290px;display:block;background:var(--bg);border:1px solid var(--bd);border-radius:8px}
+canvas.sm{height:220px}
+.tip{position:absolute;pointer-events:none;background:var(--bg);border:1px solid var(--bd);border-radius:6px;padding:6px 9px;font-size:.78rem;box-shadow:0 2px 8px rgba(0,0,0,.18);display:none;z-index:3;white-space:nowrap}
+.vl{position:absolute;top:10px;bottom:28px;width:1px;background:var(--mut);opacity:.5;pointer-events:none;display:none}
+.legend{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 0}
+.legend button{display:flex;align-items:center;gap:6px;font:inherit;font-size:.8rem;padding:3px 9px;border-radius:99px;border:1px solid var(--bd);background:var(--bg);color:var(--fg);cursor:pointer}
+.legend button.off{opacity:.45;text-decoration:line-through}
+.legend i{width:16px;height:3px;border-radius:2px;display:inline-block}
+.cap{color:var(--mut);font-size:.83rem;margin:4px 0 0}
+.readout{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px;margin-top:10px}
+.readout div{background:var(--bg);border:1px solid var(--bd);border-radius:8px;padding:6px 9px;font-size:.8rem;color:var(--mut)}
+.readout b{display:block;font-size:1.05rem;color:var(--fg)}
+.badge{display:inline-block;padding:2px 9px;border-radius:99px;font-weight:700;font-size:.8rem;color:#fff}
+.badge.ok{background:var(--ok)}.badge.warn{background:var(--warn)}.badge.bad{background:var(--bad)}
+table{border-collapse:collapse;width:100%;font-size:.86rem;display:block;overflow-x:auto}
+th,td{padding:6px 10px;border-bottom:1px solid var(--bd);text-align:right;white-space:nowrap}
+th:first-child,td:first-child{text-align:left}th{color:var(--mut);font-weight:600}
+td.bad{color:var(--bad);font-weight:700}td.good{color:var(--ok);font-weight:700}
+.bar{display:inline-block;height:8px;border-radius:4px;background:var(--acc);opacity:.55;vertical-align:middle;margin-right:6px}
+.dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px}
+ul.v{margin:6px 0;padding-left:20px}ul.v li{margin:4px 0}
+.flow{display:flex;flex-wrap:wrap;gap:8px;align-items:stretch;margin:12px 0}
+.flow .s{flex:1 1 150px;background:var(--card);border:1px solid var(--bd);border-radius:10px;padding:10px 12px;font-size:.84rem}
+.flow .s b{display:block;color:var(--acc);margin-bottom:2px}
+.flow .ar{align-self:center;color:var(--mut);font-size:1.3rem}
+figure{margin:14px 0}figure img{width:100%;height:auto;border:1px solid var(--bd);border-radius:8px;background:#fff}
+figcaption{color:var(--mut);font-size:.85rem}
+footer{border-top:1px solid var(--bd);color:var(--mut);font-size:.82rem;padding:16px 0 40px;margin-top:20px}
+@media(max-width:600px){canvas{height:240px}h1{font-size:1.35rem}}
+</style></head><body>
+<header class="top"><div class="wrap">
+<h1>ML-Based Cloud Resource Manager <span class="tag">live demo</span></h1>
+<p class="sub">Predict workload &rarr; allocate resources &rarr; auto-scale. ACC lab CA &middot; Piyush Chaudhary &middot; Roll No. 16010123234 &middot; K.J. Somaiya College of Engineering</p>
+<nav class="links"><a href="./">Report summary</a><a href="ML_Cloud_Resource_Manager_Report.pdf">Full report (PDF)</a><a href="https://github.com/Piyushchy/acc-lab-ca">Source code</a></nav>
+<p class="note"><b>What runs here:</b> your browser generates a synthetic 60-day memory trace, trains a ridge-regression forecaster on the first 48 days, then replays the last 12 days through a JavaScript port of the Python autoscaler simulator (<code>src/autoscaler.py</code>). Cost and power figures are assumed values (see <b>Design</b> tab), not measurements from a live cloud account. The report's headline numbers come from the Python pipeline (MLP forecaster); see the <b>Python results</b> tab.</p>
+</div></header>
+<main class="wrap">
+<div class="tabs" role="tablist">
+<button role="tab" id="t-live" aria-selected="true" aria-controls="tab-live">1 &middot; Live autoscaler</button>
+<button role="tab" id="t-lab" aria-selected="false" aria-controls="tab-lab">2 &middot; When the prediction is wrong</button>
+<button role="tab" id="t-repo" aria-selected="false" aria-controls="tab-repo">3 &middot; Python results</button>
+<button role="tab" id="t-design" aria-selected="false" aria-controls="tab-design">4 &middot; Design</button>
+</div>
+
+<!-- ============================ LIVE ============================ -->
+<section class="tab on" id="tab-live" role="tabpanel" aria-labelledby="t-live">
+<div class="panel"><div class="controls">
+<label>Prediction horizon<select id="horizon"><option value="1">5 min</option><option value="2">10 min</option><option value="3" selected>15 min</option><option value="6">30 min</option><option value="12">60 min</option></select></label>
+<label>Target utilisation <output id="tuO">85 %</output><input type="range" id="tu" min="70" max="95" value="85"></label>
+<label>Instance launch delay<select id="boot"><option value="1">5 min</option><option value="2">10 min</option><option value="3" selected>15 min</option><option value="6">30 min</option></select></label>
+<label>Memory per instance<select id="inst"><option value="2048">2 GB</option><option value="4096" selected>4 GB</option><option value="8192">8 GB</option></select></label>
+<label>Workload seed<input type="number" id="seed" value="7" min="1" max="9999"></label>
+<div class="row"><button class="b" id="reseed">New random workload</button></div>
+</div></div>
+
+<div id="inj" class="note" style="display:none;margin-top:14px"></div>
+<div class="kpis" id="kpis"></div>
+
+<h3>1 &middot; Forecast vs actual memory demand</h3>
+<div class="cw"><canvas id="cA" role="img" aria-label="Actual memory demand versus the forecast and its upper bound"></canvas><div class="vl"></div><div class="tip"></div></div>
+<div class="legend" id="lgA"></div>
+<p class="cap">The forecast made <i>horizon</i> minutes earlier is drawn at the time it applies to, so the orange line is directly comparable with the black one. The purple dashed line is the upper bound (forecast + 1.645&sigma;) used by the q95 and hybrid policies.</p>
+
+<h3>2 &middot; Auto-scaling decisions: demand vs provisioned capacity</h3>
+<div class="panel"><div class="row">
+<label style="min-width:260px;flex:1">Window start <output id="winO"></output><input type="range" id="win" min="0" max="100" value="0"></label>
+<label>Highlight policy<select id="focus"><option value="pm">Predictive (ML mean)</option><option value="pu">Predictive (ML q95)</option><option value="hy">Hybrid</option><option value="re">Reactive</option><option value="or">Oracle</option><option value="st">Static</option></select></label>
+<label>Replay speed<select id="speed"><option value="2">slow</option><option value="6" selected>normal</option><option value="18">fast</option></select></label>
+<div class="row" style="padding-top:16px"><button class="b p" id="play">&#9654; Replay</button><button class="b" id="resetPlay">Reset</button></div>
+</div>
+<div class="readout" id="readout"></div></div>
+<div class="cw"><canvas id="cB" role="img" aria-label="Memory demand and provisioned capacity per policy"></canvas><div class="vl"></div><div class="tip"></div></div>
+<div class="legend" id="lgB"></div>
+<p class="cap">Capacity = ready instances &times; memory per instance. Red bands mark steps where the highlighted policy ran out of memory (demand &gt; capacity). Click legend entries to show or hide a policy.</p>
+
+<h3>3 &middot; Policy comparison on the held-out 12 days</h3>
+<table id="tbl"></table>
+<p class="cap" id="tblNote"></p>
+</section>
+
+<!-- ============================ LAB ============================ -->
+<section class="tab" id="tab-lab" role="tabpanel" aria-labelledby="t-lab">
+<p>Break the forecaster on purpose and watch what each policy does. Under-prediction starves the cluster; over-prediction only costs money; sudden surges are limited by how long a new instance takes to launch.</p>
+<div class="panel"><div class="controls">
+<label>Forecast bias <output id="biasO">0 %</output><input type="range" id="bias" min="-40" max="40" value="0" step="5"></label>
+<label>Forecast noise &sigma; <output id="noiseO">0 %</output><input type="range" id="noise" min="0" max="30" value="0" step="1"></label>
+<label>Unforeseen surges <output id="sgnO">0</output><input type="range" id="sgn" min="0" max="8" value="0"></label>
+<label>Surge size <output id="sgmO">+40 %</output><input type="range" id="sgm" min="10" max="80" value="40" step="5"></label>
+</div>
+<div class="row" style="margin-top:10px">
+<button class="b" data-pre="under">Under-predict &minus;20 %</button>
+<button class="b" data-pre="over">Over-predict +40 %</button>
+<button class="b" data-pre="noisy">Noisy forecast (15 %)</button>
+<button class="b" data-pre="surge">Sudden surges</button>
+<button class="b" data-pre="reset">Reset</button>
+<button class="b" id="worst">Jump to worst moment</button></div></div>
+<div class="kpis" id="labKpis"></div>
+<h3>What happened</h3><ul class="v" id="verdict"></ul>
+<h3>Capacity vs demand under the broken forecast</h3>
+<div class="cw"><canvas id="cC" role="img" aria-label="Demand and capacity under injected forecast error"></canvas><div class="vl"></div><div class="tip"></div></div>
+<div class="legend" id="lgC"></div>
+<p class="cap">Red bands: steps where the ML (mean) policy exhausted memory. Use the window slider on the first tab, or &ldquo;Jump to worst moment&rdquo;.</p>
+<h3>Policy results under this scenario</h3>
+<table id="tblLab"></table>
+<h3>Sweep: how forecast bias changes the outcome</h3>
+<div class="cw"><canvas id="cD" class="sm" role="img" aria-label="Memory exhausted percentage versus forecast bias"></canvas><div class="vl"></div><div class="tip"></div></div>
+<p class="cap">Steps with memory exhausted (%) vs forecast bias, using the noise and surge settings above.</p>
+<div class="cw"><canvas id="cE" class="sm" role="img" aria-label="Cost versus forecast bias"></canvas><div class="vl"></div><div class="tip"></div></div>
+<p class="cap">Total cost (USD, assumed pricing) vs forecast bias. Over-prediction buys safety with money; the hybrid policy&rsquo;s drift fallback caps the damage of a biased model.</p>
+</section>
+
+<!-- ============================ REPO RESULTS ============================ -->
+<section class="tab" id="tab-repo" role="tabpanel" aria-labelledby="t-repo">
+<p>These are the numbers produced by <code>python main.py</code> in the repository (synthetic 60-day trace, last ~12 days held out, 15-minute horizon, best model = MLP 64-32). They differ slightly from the in-browser run, which uses its own random trace and a ridge forecaster.</p>
+<h3>Forecast accuracy (test set)</h3>
+<table><thead><tr><th>Model</th><th>MAE (MB)</th><th>RMSE (MB)</th><th>MAPE %</th><th>R&sup2;</th><th>Skill vs persistence</th></tr></thead><tbody>
+<tr><td>Persistence</td><td>497.00</td><td>648.12</td><td>2.01</td><td>0.99</td><td>0 %</td></tr>
+<tr><td>Moving average (1 h)</td><td>1249.48</td><td>1575.57</td><td>5.05</td><td>0.94</td><td>&minus;151 %</td></tr>
+<tr><td>Seasonal naive (24 h)</td><td>436.76</td><td>597.49</td><td>1.75</td><td>0.99</td><td>12 %</td></tr>
+<tr><td>Ridge regression</td><td>256.02</td><td>367.40</td><td>1.02</td><td>1.00</td><td>48 %</td></tr>
+<tr><td>Random Forest</td><td>259.50</td><td>372.03</td><td>1.03</td><td>1.00</td><td>48 %</td></tr>
+<tr><td>Gradient Boosting</td><td>260.53</td><td>371.84</td><td>1.03</td><td>1.00</td><td>48 %</td></tr>
+<tr><td><b>MLP (64-32)</b></td><td><b>252.63</b></td><td><b>361.91</b></td><td><b>1.01</b></td><td>1.00</td><td><b>49 %</b></td></tr></tbody></table>
+<h3>Policy comparison (normal test period)</h3>
+<table><thead><tr><th>Policy</th><th>Util %</th><th>Exhausted %</th><th>p99 latency (ms)</th><th>Cost (USD)</th><th>Energy (kWh)</th></tr></thead><tbody>
+<tr><td>Static (peak-sized)</td><td>50.30</td><td>0.00</td><td>194</td><td>141.36</td><td>264.0</td></tr>
+<tr><td>Reactive</td><td>78.56</td><td>0.03</td><td>333</td><td>90.95</td><td>209.5</td></tr>
+<tr><td>Predictive (ML mean)</td><td>78.53</td><td>0.00</td><td>279</td><td>90.95</td><td>209.5</td></tr>
+<tr><td>Predictive (ML q95)</td><td>77.00</td><td>0.00</td><td>255</td><td>92.71</td><td>211.4</td></tr>
+<tr><td>Hybrid (q95 + guard + fallback)</td><td>76.99</td><td>0.00</td><td>254</td><td>92.72</td><td>211.4</td></tr>
+<tr><td>Oracle</td><td>78.49</td><td>0.00</td><td>263</td><td>90.98</td><td>209.5</td></tr></tbody></table>
+<h3>With unforeseen surges injected</h3>
+<table><thead><tr><th>Policy</th><th>Util %</th><th>Exhausted %</th><th>OOM episodes</th><th>p99 (ms)</th><th>Cost (USD)</th></tr></thead><tbody>
+<tr><td>Reactive</td><td>78.52</td><td>0.18</td><td>3</td><td>341</td><td>91.42</td></tr>
+<tr><td>Predictive (ML mean)</td><td>78.52</td><td>0.15</td><td>2</td><td>283</td><td>91.38</td></tr>
+<tr><td>Hybrid</td><td>76.83</td><td>0.15</td><td>2</td><td>259</td><td>93.49</td></tr>
+<tr><td>Oracle</td><td>78.46</td><td>0.00</td><td>0</td><td>263</td><td>91.44</td></tr></tbody></table>
+<h3>Figures</h3>
+<figure><img src="figures/03_forecast_vs_actual.png" alt="Forecast versus actual" loading="lazy"><figcaption>Forecast vs actual memory on the test period.</figcaption></figure>
+<figure><img src="figures/06_capacity_timeline.png" alt="Capacity timeline" loading="lazy"><figcaption>Capacity tracking demand under each policy.</figcaption></figure>
+<figure><img src="figures/07_wrong_predictions.png" alt="Bias and noise experiments" loading="lazy"><figcaption>Bias and noise injected into the forecast.</figcaption></figure>
+<figure><img src="figures/11_launch_delay_sweep.png" alt="Launch delay sweep" loading="lazy"><figcaption>Launch delay limits what any policy can do against a sudden surge.</figcaption></figure>
+</section>
+
+<!-- ============================ DESIGN ============================ -->
+<section class="tab" id="tab-design" role="tabpanel" aria-labelledby="t-design">
+<h2>System design</h2>
+<div class="flow">
+<div class="s"><b>1 Metrics</b>memory, request rate, CPU every 5 min (<code>cloud/collect_metrics.py</code>)</div><div class="ar">&rarr;</div>
+<div class="s"><b>2 Features</b>lags, rolling means, diffs, yesterday&rsquo;s value, time-of-day of the <i>target</i> time</div><div class="ar">&rarr;</div>
+<div class="s"><b>3 Forecaster</b>Ridge / RF / GB / MLP, memory at t+h, plus an upper bound</div><div class="ar">&rarr;</div>
+<div class="s"><b>4 Sizing rule</b>instances = &lceil;forecast &divide; (instance memory &times; target util)&rceil;</div><div class="ar">&rarr;</div>
+<div class="s"><b>5 Autoscaler</b>launch delay, stabilised scale-in, emergency guard, drift fallback</div><div class="ar">&rarr;</div>
+<div class="s"><b>6 Cloud</b>Auto Scaling Group desired capacity (<code>cloud/aws_apply.py</code>)</div>
+</div>
+<h3>How the assignment items are covered</h3>
+<table><thead><tr><th style="text-align:left">Item</th><th style="text-align:left">Answer</th><th style="text-align:left">Where to see it</th></tr></thead><tbody>
+<tr><td style="white-space:normal">Input data and features</td><td style="white-space:normal;text-align:left">Memory MB and request rate every 5 min; 21 features in this demo (32 in the Python pipeline)</td><td style="text-align:left">Chart 1, <code>src/features.py</code></td></tr>
+<tr><td style="white-space:normal">Algorithm and horizon</td><td style="white-space:normal;text-align:left">Ridge here (closed form, trained in the page); MLP is best in Python. Horizon 15 min = typical instance launch time, swept 5&ndash;60 min</td><td style="text-align:left">Horizon selector, KPI strip</td></tr>
+<tr><td style="white-space:normal">Allocation / auto-scaling</td><td style="white-space:normal;text-align:left">Size for forecast &divide; target utilisation; scale out at once but capacity arrives after the launch delay; scale in only to the highest request of the last 30 min</td><td style="text-align:left">Chart 2 and replay</td></tr>
+<tr><td style="white-space:normal">Evaluation</td><td style="white-space:normal;text-align:left">Accuracy (MAE/MAPE/skill), utilisation, latency proxy, cost, energy vs static and reactive baselines</td><td style="text-align:left">KPI strip, policy table</td></tr>
+<tr><td style="white-space:normal">Wrong predictions</td><td style="white-space:normal;text-align:left">Bias, noise and surge injection; hybrid policy adds an emergency guard and a drift fallback to reactive sizing</td><td style="text-align:left">Tab 2</td></tr></tbody></table>
+<h3>Assumptions (all editable in <code>ClusterConfig</code>)</h3>
+<ul class="v"><li>Price $0.0416 per instance-hour (about a 4 GB on-demand VM); power 45 W idle to 110 W busy per instance.</li>
+<li>Latency proxy = 40 ms &divide; (1 &minus; utilisation), capped near saturation; 2000 ms when memory is exhausted.</li>
+<li>Static baseline is sized for the peak of the test period plus 20 % headroom.</li>
+<li>Only memory is modelled; the workload is synthetic with request rate leading memory by about 15 minutes.</li>
+<li>The q95 bound here is forecast + 1.645&sigma; (Gaussian), a simpler stand-in for the quantile model in Python; its measured coverage is shown in the KPI strip.</li></ul>
+</section>
+<footer>ACC lab CA &middot; Piyush Chaudhary &middot; <a href="https://github.com/Piyushchy/acc-lab-ca">github.com/Piyushchy/acc-lab-ca</a></footer>
+</main>
+
+<script>
+"use strict";
+/* ---------- constants ---------- */
+const DAY=288, DAYS=60, TEST_DAYS=12, N=DAYS*DAY, T0=N-TEST_DAYS*DAY, M=TEST_DAYS*DAY-12, ZQ=1.645, START=300;
+const DOW=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+const $=s=>document.querySelector(s);
+const f0=v=>Math.round(v).toLocaleString('en-US'), f1=v=>v.toFixed(1), f2=v=>v.toFixed(2);
+const clamp=(v,a,b)=>Math.min(b,Math.max(a,v));
+
+/* ---------- RNG ---------- */
+function rng(seed){let a=seed>>>0;return()=>{a=(a+0x6D2B79F5)|0;let t=Math.imul(a^(a>>>15),1|a);t=(t+Math.imul(t^(t>>>7),61|t))^t;return((t^(t>>>14))>>>0)/4294967296}}
+function gauss(r){let u=0;while(!u)u=r();return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*r())}
+
+/* ---------- synthetic workload (request rate leads memory by ~15 min) ---------- */
+const wlCache={};
+function workload(seed){
+  if(wlCache[seed])return wlCache[seed];
+  const r=rng(seed*7919+13), req=new Float64Array(N), mem=new Float64Array(N), cs=new Float64Array(N+1);
+  let ar=0, mar=0;
+  for(let t=0;t<N;t++){
+    const hr=(t%DAY)/12, dow=Math.floor(t/DAY)%7;
+    const daily=0.5-0.5*Math.cos(2*Math.PI*(hr-4)/24), bump=0.25*Math.exp(-((hr-10)**2)/(2*1.6*1.6));
+    const wk=dow>=5?0.78:1, trend=1+0.0012*(t/DAY);
+    ar=0.96*ar+0.012*gauss(r);
+    req[t]=Math.max(50,(450+1500*(daily+bump))*wk*trend*(1+ar)+25*gauss(r));
+  }
+  for(let t=0;t<N;t++){
+    mar=0.9*mar+140*gauss(r);
+    mem[t]=9000+11*req[Math.max(0,t-3)]+mar+90*gauss(r);
+    cs[t+1]=cs[t]+mem[t];
+  }
+  return wlCache[seed]={mem,req,cs};
+}
+
+/* ---------- features + ridge ---------- */
+function featRow(w,t,h){
+  const m=w.mem,q=w.req,cs=w.cs,tt=t+h,ang=2*Math.PI*(tt%DAY)/DAY,dow=Math.floor(tt/DAY)%7;
+  return [m[t],m[t-1],m[t-2],m[t-3],m[t-6],m[t-12],m[t-36],m[t]-m[t-1],m[t]-m[t-3],
+    (cs[t+1]-cs[t-11])/12,(cs[t+1]-cs[t-35])/36,q[t],q[t-1],q[t-3],m[tt-DAY],m[tt-DAY]-m[t-DAY],
+    Math.sin(ang),Math.cos(ang),Math.sin(2*ang),Math.cos(2*ang),dow>=5?1:0];
+}
+const NF=21;
+function solve(A,b){const n=b.length;for(let i=0;i<n;i++){let p=i;for(let k=i+1;k<n;k++)if(Math.abs(A[k][i])>Math.abs(A[p][i]))p=k;[A[i],A[p]]=[A[p],A[i]];[b[i],b[p]]=[b[p],b[i]];
+  for(let k=i+1;k<n;k++){const f=A[k][i]/A[i][i];for(let j=i;j<n;j++)A[k][j]-=f*A[i][j];b[k]-=f*b[i];}}
+  const x=new Array(n).fill(0);for(let i=n-1;i>=0;i--){let s=b[i];for(let j=i+1;j<n;j++)s-=A[i][j]*x[j];x[i]=s/A[i][i];}return x;}
+const mdlCache={};
+function model(seed,h){
+  const key=seed+'|'+h;if(mdlCache[key])return mdlCache[key];
+  const w=workload(seed),rows=[],ys=[];
+  for(let t=START;t+h<T0;t++){rows.push(featRow(w,t,h));ys.push(w.mem[t+h]);}
+  const n=rows.length,mu=new Array(NF).fill(0),sd=new Array(NF).fill(0);
+  for(const r of rows)for(let j=0;j<NF;j++)mu[j]+=r[j];for(let j=0;j<NF;j++)mu[j]/=n;
+  for(const r of rows)for(let j=0;j<NF;j++)sd[j]+=(r[j]-mu[j])**2;for(let j=0;j<NF;j++)sd[j]=Math.sqrt(sd[j]/n)||1;
+  const ym=ys.reduce((a,b)=>a+b,0)/n,A=Array.from({length:NF},()=>new Array(NF).fill(0)),b=new Array(NF).fill(0);
+  const Z=rows.map(r=>r.map((v,j)=>(v-mu[j])/sd[j]));
+  for(let i=0;i<n;i++){const z=Z[i],y=ys[i]-ym;for(let a=0;a<NF;a++){b[a]+=z[a]*y;for(let c=a;c<NF;c++)A[a][c]+=z[a]*z[c];}}
+  for(let a=0;a<NF;a++){A[a][a]+=1;for(let c=0;c<a;c++)A[a][c]=A[c][a];}
+  const wt=solve(A,b);
+  const pred=z=>{let s=ym;for(let j=0;j<NF;j++)s+=wt[j]*z[j];return s;};
+  let sse=0;for(let i=0;i<n;i++){const e=pred(Z[i])-ys[i];sse+=e*e;}
+  const sigma=Math.sqrt(sse/n);
+  const pm=new Float64Array(M),pu=new Float64Array(M);
+  let ae=0,se=0,ape=0,pe=0,cov=0,under=0;
+  for(let i=0;i<M;i++){
+    const t=T0+i,r=featRow(w,t,h),z=r.map((v,j)=>(v-mu[j])/sd[j]);
+    pm[i]=pred(z);pu[i]=pm[i]+ZQ*sigma;
+    const a=w.mem[t+h],e=pm[i]-a;ae+=Math.abs(e);se+=e*e;ape+=Math.abs(e)/a;pe+=Math.abs(w.mem[t]-a);
+    if(a<=pu[i])cov++;if(pm[i]<a)under++;
+  }
+  const mae=ae/M,pmae=pe/M;
+  return mdlCache[key]={pm,pu,sigma,mu,sd,pred,metrics:{mae,rmse:Math.sqrt(se/M),mape:100*ape/M,pmae,skill:100*(1-mae/pmae),cov:100*cov/M,under:100*under/M}};
+}
+
+/* ---------- policies ---------- */
+const NAMES={st:'Static (peak + 20%)',re:'Reactive (target tracking)',pm:'Predictive (ML mean)',pu:'Predictive (ML q95)',hy:'Hybrid (ML q95 + guard + fallback)',or:'Oracle (perfect forecast)'};
+const COLORS={st:'--c-static',re:'--c-react',pm:'--c-pm',pu:'--c-pu',hy:'--c-hy',or:'--c-or'};
+function mkPolicy(k,staticN){
+  const per=S=>S.cfg.inst*S.cfg.tu;
+  if(k==='st')return{dynamic:false,n:staticN,desired:()=>staticN};
+  if(k==='re')return{dynamic:true,desired:(t,S)=>Math.ceil(S.demand[t]/per(S))};
+  if(k==='pm')return{dynamic:true,desired:(t,S)=>Math.ceil(S.pm[t]/per(S))};
+  if(k==='pu')return{dynamic:true,desired:(t,S)=>Math.ceil(S.pu[t]/per(S))};
+  if(k==='or')return{dynamic:true,desired:(t,S)=>Math.ceil(S.future[t]/per(S))};
+  const P={dynamic:true,fb:[],gd:[],em:0.08,surge:0.25,thr:0.12,win:12,fbh:0.30,
+    desired(t,S){const h=S.horizon,D=S.demand[t],lo=Math.max(t-this.win+1,h),cnt=t-lo+1;let mape=0;
+      if(cnt>=3){let s=0;for(let k2=lo;k2<=t;k2++)s+=Math.abs(S.pm[k2-h]-S.demand[k2])/S.demand[k2];mape=s/cnt;}
+      const fb=mape>this.thr;let need=fb?Math.max(S.pu[t],D*(1+this.fbh)):S.pu[t];
+      const gd=D/(S.ready*S.cfg.inst)>Math.min(0.97,S.cfg.tu+this.em);if(gd)need=Math.max(need,D*(1+this.surge));
+      this.fb.push(fb);this.gd.push(gd);return Math.ceil(need/per(S));}};
+  return P;
+}
+function latency(u,cfg){return u>=1?cfg.timeout:cfg.base/(1-Math.min(u,0.95));}
+function pct(arr,p){const a=Float64Array.from(arr).sort(),k=(a.length-1)*p,f=Math.floor(k),c=Math.min(f+1,a.length-1);return a[f]+(a[c]-a[f])*(k-f);}
+function simulate(pol,D,cfg,pm,pu,fut,h){
+  const n=D.length,S={demand:D,pm,pu,future:fut,cfg,horizon:h,ready:0,total:0};
+  let start=pol.dynamic?Math.ceil(D[0]/(cfg.inst*cfg.tu)):pol.n;start=clamp(start,cfg.minI,cfg.maxI);S.ready=start;S.total=start;
+  const pend=[],hist=[],ready=new Int32Array(n),billed=new Int32Array(n),raw=new Int32Array(n);let actions=0;
+  for(let t=0;t<n;t++){
+    while(pend.length&&pend[0]<=t){pend.shift();S.ready++;}
+    ready[t]=S.ready;billed[t]=S.ready+pend.length;
+    if(pol.dynamic){
+      S.total=S.ready+pend.length;const r=clamp(pol.desired(t,S),cfg.minI,cfg.maxI);hist.push(r);raw[t]=r;
+      if(r>S.total){for(let k=0;k<r-S.total;k++)pend.push(t+cfg.boot);actions++;}
+      else{let tg=0;for(let k=Math.max(0,hist.length-cfg.siw);k<hist.length;k++)tg=Math.max(tg,hist[k]);
+        let rem=S.total-tg;if(rem>0){actions++;while(rem>0&&pend.length){pend.pop();rem--;}S.ready=Math.max(cfg.minI,S.ready-rem);}}
+    }else raw[t]=pol.n;
+  }
+  const u=new Float64Array(n),lat=new Float64Array(n),sh=5/60;let pw=0,viol=0,eps=0,near=0,short=0,lsum=0,bsum=0,rsum=0;const vf=new Uint8Array(n);
+  for(let t=0;t<n;t++){
+    u[t]=D[t]/(ready[t]*cfg.inst);lat[t]=latency(u[t],cfg);lsum+=lat[t];
+    pw+=ready[t]*(cfg.pidle+(cfg.pmax-cfg.pidle)*Math.min(u[t],1))+(billed[t]-ready[t])*cfg.pidle;
+    if(u[t]>1){viol++;vf[t]=1;short+=D[t]-ready[t]*cfg.inst;if(t===0||!vf[t-1])eps++;}
+    if(u[t]>0.9)near++;bsum+=billed[t];rsum+=ready[t];
+  }
+  let us=0;for(let t=0;t<n;t++)us+=Math.min(u[t],1);
+  return{ready,billed,raw,u,lat,vf,pol,sum:{util:100*us/n,viol:100*viol/n,eps,near:100*near/n,short:short/1024*sh,lmean:lsum/n,p99:pct(lat,0.99),
+    cost:bsum*cfg.price*sh,energy:pw*sh/1000,avgI:rsum/n,actions}};
+}
+
+/* ---------- scenario ---------- */
+function injectSurges(D,n,mag,seed){
+  const out=Float64Array.from(D),r=rng(seed*31+5),starts=[];
+  for(let k=0,guard=0;k<n&&guard<500;guard++){const s=Math.floor(80+r()*(D.length-160));if(starts.every(x=>Math.abs(x-s)>180)){starts.push(s);k++;}}
+  starts.sort((a,b)=>a-b);
+  for(const s of starts)for(let j=0;j<12;j++)out[s+j]*=1+mag*(j<6?1:1-(j-5)/7);
+  return{D:out,starts};
+}
+const noiseCache={};
+function noiseSeq(seed){if(noiseCache[seed])return noiseCache[seed];const r=rng(seed*131+7),a=new Float64Array(M);for(let i=0;i<M;i++)a[i]=gauss(r);return noiseCache[seed]=a;}
+function cfgOf(st){return{inst:st.inst,tu:st.tu,boot:st.boot,minI:2,maxI:80,siw:6,price:0.0416,pidle:45,pmax:110,base:40,timeout:2000};}
+
+function scenario(st,keys,over){
+  const o=Object.assign({bias:st.bias,noise:st.noise,sgn:st.sgn,sgm:st.sgm},over||{});
+  const w=workload(st.seed),mdl=model(st.seed,st.h),cfg=cfgOf(st);
+  const clean=new Float64Array(M);for(let i=0;i<M;i++)clean[i]=w.mem[T0+i];
+  const sg=injectSurges(clean,o.sgn,o.sgm/100,st.seed),D=sg.D;
+  const fut=new Float64Array(M);for(let i=0;i<M;i++)fut[i]=i+st.h<M?D[i+st.h]:D[M-1];
+  let bm=mdl.pm,bu=mdl.pu;
+  if(o.sgn>0){ // live forecaster sees the surged memory readings (trained on clean data)
+    const mem2=Float64Array.from(w.mem),cs2=Float64Array.from(w.cs);
+    for(let i=0;i<M;i++)mem2[T0+i]=D[i];
+    for(let t=T0;t<N;t++)cs2[t+1]=cs2[t]+mem2[t];
+    const w2={mem:mem2,req:w.req,cs:cs2};bm=new Float64Array(M);bu=new Float64Array(M);
+    for(let i=0;i<M;i++){const z=featRow(w2,T0+i,st.h).map((v,j)=>(v-mdl.mu[j])/mdl.sd[j]);bm[i]=mdl.pred(z);bu[i]=bm[i]+ZQ*mdl.sigma;}
+  }
+  const nz=noiseSeq(st.seed),pm=new Float64Array(M),pu=new Float64Array(M);
+  for(let i=0;i<M;i++){const f=Math.max(0.2,(1+o.bias/100)*(1+o.noise/100*nz[i]));pm[i]=bm[i]*f;pu[i]=bu[i]*f;}
+  let peak=0;for(let i=0;i<M;i++)peak=Math.max(peak,clean[i]);
+  const staticN=clamp(Math.ceil(peak*1.2/(cfg.inst*cfg.tu)),cfg.minI,cfg.maxI);
+  const res={};
+  for(const k of keys){const p=mkPolicy(k,staticN);res[k]=simulate(p,D,cfg,pm,pu,fut,st.h);}
+  // realised MAPE of the (possibly sabotaged) forecast vs what happened h steps later
+  let ape=0,c=0;for(let i=0;i<M-st.h;i++){ape+=Math.abs(pm[i]-D[i+st.h])/D[i+st.h];c++;}
+  return{D,pm,pu,fut,cfg,res,starts:sg.starts,mdl,staticN,h:st.h,mapeInj:100*ape/c};
+}
+const ALL=['st','re','pm','pu','hy','or'];
+
+/* ---------- state ---------- */
+const state={seed:7,h:3,tu:0.85,boot:3,inst:4096,bias:0,noise:0,sgn:0,sgm:40,win:288,focus:'pm',tab:'live'};
+let R=null,RL=null;
+const hidden={A:{},B:{st:true,pu:true,or:true},C:{st:true,pu:true}};
+const play={on:false,eng:false,i:0,raf:0,last:0};
+
+function tlabel(i,full){const a=T0+i,d=Math.floor(a/DAY),mins=(a%DAY)*5,hh=String(Math.floor(mins/60)).padStart(2,'0'),mm=String(mins%60).padStart(2,'0');
+  return full?`${DOW[d%7]} (day ${d+1}) ${hh}:${mm}`:(mins===0?`${DOW[d%7]} 00:00`:`${hh}:${mm}`);}
+
+/* ---------- charts ---------- */
+function niceStep(raw){const e=Math.pow(10,Math.floor(Math.log10(raw))),f=raw/e;return(f<1.5?1:f<3?2:f<7?5:10)*e;}
+function drawChart(cv,o){
+  const dpr=window.devicePixelRatio||1,W=cv.clientWidth,H=cv.clientHeight;if(!W)return;
+  cv.width=Math.round(W*dpr);cv.height=Math.round(H*dpr);const g=cv.getContext('2d');g.setTransform(dpr,0,0,dpr,0,0);g.clearRect(0,0,W,H);
+  const cs=getComputedStyle(document.documentElement),C=n=>cs.getPropertyValue(n).trim();
+  const L=84,Rm=26,T=10,B=28,pw=W-L-Rm,ph=H-T-B,i0=o.i0,i1=o.i1,iE=o.limit==null?i1:Math.min(o.limit,i1),vis=o.series.filter(s=>!s.hidden);
+  let lo=Infinity,hi=-Infinity;
+  for(const s of vis)for(let i=i0;i<=iE;i++){const v=s.data[i];if(v==null||Number.isNaN(v))continue;if(v<lo)lo=v;if(v>hi)hi=v;}
+  if(!isFinite(lo)){lo=0;hi=1;}
+  if(o.yMin!=null)lo=o.yMin;if(o.yMax!=null)hi=Math.max(o.yMax,hi);
+  if(hi-lo<1e-9)hi=lo+1;const pad=(hi-lo)*0.06;if(o.yMin==null)lo-=pad;hi+=pad;
+  const x=i=>L+(i-i0)/((i1-i0)||1)*pw,y=v=>T+ph-(v-lo)/(hi-lo)*ph;
+  g.font='11px system-ui,sans-serif';g.textBaseline='middle';g.textAlign='right';
+  const st=niceStep((hi-lo)/4);g.lineWidth=1;
+  for(let v=Math.ceil(lo/st)*st;v<=hi;v+=st){const yy=y(v);g.strokeStyle=C('--bd');g.beginPath();g.moveTo(L,yy);g.lineTo(L+pw,yy);g.stroke();g.fillStyle=C('--mut');g.fillText(o.fmt(v),L-6,yy);}
+  g.textAlign='center';g.textBaseline='top';
+  if(o.xlab){const n=i1-i0,every=n>1500?DAY:n>420?72:24;const first=Math.ceil((T0+i0)/every)*every-T0;
+    for(let i=first;i<=i1;i+=every){const xx=x(i);g.strokeStyle=C('--bd');g.beginPath();g.moveTo(xx,T);g.lineTo(xx,T+ph);g.stroke();g.fillStyle=C('--mut');g.fillText(o.xlab(i),xx,T+ph+6);}}
+  else if(o.xticks){for(const [i,lab] of o.xticks){const xx=x(i);g.fillStyle=C('--mut');g.fillText(lab,xx,T+ph+6);}}
+  if(o.shade){g.fillStyle=C('--shade');let s=-1;for(let i=i0;i<=iE+1;i++){const on=i<=iE&&o.shade[i];if(on&&s<0)s=i;if(!on&&s>=0){g.fillRect(x(s)-1,T,Math.max(3,x(i)-x(s)+1),ph);s=-1;}}}
+  for(const s of vis){g.strokeStyle=C(s.color);g.lineWidth=s.w||1.8;g.setLineDash(s.dash||[]);g.beginPath();let pen=false;
+    for(let i=i0;i<=iE;i++){const v=s.data[i];if(v==null||Number.isNaN(v)){pen=false;continue;}const xx=x(i),yy=y(v);if(pen)g.lineTo(xx,yy);else{g.moveTo(xx,yy);pen=true;}}g.stroke();}
+  g.setLineDash([]);
+  if(o.limit!=null&&o.limit<=i1){const xx=x(iE);g.strokeStyle=C('--acc');g.lineWidth=1.5;g.beginPath();g.moveTo(xx,T);g.lineTo(xx,T+ph);g.stroke();}
+  cv._c={L,pw,T,ph,i0,i1,iE,o,vis};
+}
+function attachHover(cv){
+  const cw=cv.parentElement,tip=cw.querySelector('.tip'),vl=cw.querySelector('.vl');
+  cv.addEventListener('mousemove',e=>{const c=cv._c;if(!c)return;const rect=cv.getBoundingClientRect(),px=e.clientX-rect.left;
+    if(px<c.L||px>c.L+c.pw){tip.style.display=vl.style.display='none';return;}
+    let i=Math.round(c.i0+(px-c.L)/c.pw*(c.i1-c.i0));i=clamp(i,c.i0,c.iE);
+    const head=c.o.tipHead?c.o.tipHead(i):tlabel(i,true);
+    tip.innerHTML=`<b>${head}</b><br>`+c.vis.map(s=>{const v=s.data[i];return v==null||Number.isNaN(v)?'':`<span class="dot" style="background:var(${s.color})"></span>${s.name}: <b>${c.o.fmt(v)}</b>`;}).filter(Boolean).join('<br>');
+    tip.style.display='block';const tw=tip.offsetWidth;tip.style.left=clamp(px+14,0,rect.width-tw-4)+'px';tip.style.top='14px';
+    vl.style.display='block';vl.style.left=(px)+'px';});
+  cv.addEventListener('mouseleave',()=>{tip.style.display=vl.style.display='none';});
+}
+function legend(el,list,store,redraw){
+  el.innerHTML='';for(const s of list){const b=document.createElement('button');b.className=store[s.key]?'off':'';b.innerHTML=`<i style="background:var(${s.color})"></i>${s.name}`;
+    b.onclick=()=>{store[s.key]=!store[s.key];redraw();};el.appendChild(b);}
+}
+
+/* ---------- renderers ---------- */
+function winRange(){
+  if(play.eng){const i=play.i;return{i0:Math.max(0,i-DAY+1),i1:Math.max(0,i-DAY+1)+DAY-1,limit:i};}
+  return{i0:state.win,i1:Math.min(M-1,state.win+3*DAY-1)};
+}
+function maskedFc(arr,h){const o=new Float64Array(M).fill(NaN);for(let i=h;i<M;i++)o[i]=arr[i-h];return o;}
+function renderLive(){
+  const m=R.mdl.metrics,s=R.res,cs=1-s.pm.sum.cost/s.st.sum.cost,es=1-s.pm.sum.energy/s.st.sum.energy;
+  $('#kpis').innerHTML=[
+    [f0(m.mae)+' MB','forecast MAE (persistence: '+f0(m.pmae)+' MB)'],
+    [f2(m.mape)+' %','MAPE at '+state.h*5+' min horizon'],
+    [f1(m.skill)+' %','skill vs “memory stays the same”'],
+    [f1(m.cov)+' %','q95 bound coverage (target 95 %)'],
+    [f1(s.st.sum.util)+' → '+f1(s.pm.sum.util)+' %','utilisation, static → ML'],
+    [(cs*100).toFixed(0)+' % / '+(es*100).toFixed(0)+' %','cost / energy saved vs static']
+  ].map(([b,t])=>`<div class="k"><b>${b}</b><span>${t}</span></div>`).join('');
+  const inj=$('#inj'),on=state.bias!==0||state.noise>0||state.sgn>0;
+  inj.style.display=on?'block':'none';
+  if(on)inj.innerHTML=`<b>Fault injection is active</b> (bias ${state.bias}%, noise ${state.noise}%, ${state.sgn} surges) — set in tab 2. Press <b>Reset</b> there to return to the clean run.`;
+  const w=winRange(),h=state.h;
+  drawChart($('#cA'),{i0:w.i0,i1:w.i1,limit:w.limit,fmt:v=>f0(v)+' MB',xlab:i=>tlabel(i),
+    series:[{name:'Actual demand',color:'--c-dem',w:2,data:R.D},{name:'Forecast (made '+h*5+' min earlier)',color:'--c-fc',data:maskedFc(R.pm,h)},{name:'Upper bound (q95)',color:'--c-pu',dash:[5,4],w:1.3,data:maskedFc(R.pu,h)}].map(x=>Object.assign(x,{hidden:hidden.A[x.name]}))});
+  legend($('#lgA'),[{key:'Actual demand',name:'Actual demand',color:'--c-dem'},{key:'Forecast (made '+h*5+' min earlier)',name:'Forecast',color:'--c-fc'},{key:'Upper bound (q95)',name:'Upper bound (q95)',color:'--c-pu'}],hidden.A,renderLive);
+  const capOf=k=>{const a=new Float64Array(M);for(let i=0;i<M;i++)a[i]=R.res[k].ready[i]*R.cfg.inst;return a;};
+  const series=[{key:'dem',name:'Demand',color:'--c-dem',w:2.2,data:R.D}].concat(ALL.map(k=>({key:k,name:NAMES[k],color:COLORS[k],data:capOf(k),dash:k==='st'?[2,3]:null})));
+  for(const s of series)s.hidden=!!hidden.B[s.key];
+  drawChart($('#cB'),{i0:w.i0,i1:w.i1,limit:w.limit,fmt:v=>f0(v)+' MB',xlab:i=>tlabel(i),series,shade:R.res[state.focus].vf});
+  legend($('#lgB'),series,hidden.B,renderLive);
+  renderTable($('#tbl'),R,ALL);
+  $('#tblNote').textContent=`Static baseline = ${R.staticN} instances sized for the test-period peak + 20 % headroom. Policy numbers cover ${M} five-minute steps (${(M/DAY).toFixed(1)} days). ML policies use the horizon, utilisation target and launch delay chosen above.`;
+  renderReadout();
+  $('#winO').textContent=tlabel(state.win,true);
+}
+function renderTable(el,Rx,keys){
+  const st=Rx.res.st?Rx.res.st.sum:null;let h='<thead><tr><th>Policy</th><th>Util %</th><th>Exhausted %</th><th>OOM episodes</th><th>p99 latency</th><th>Cost (USD)</th><th>vs static</th><th>Energy kWh</th><th>Avg instances</th><th>Scale actions</th></tr></thead><tbody>';
+  const maxC=Math.max(...keys.map(k=>Rx.res[k].sum.cost));
+  for(const k of keys){const s=Rx.res[k].sum,d=st?(s.cost/st.cost-1)*100:null;
+    h+=`<tr><td><span class="dot" style="background:var(${COLORS[k]})"></span>${NAMES[k]}</td><td>${f1(s.util)}</td><td class="${s.viol>0?'bad':''}">${f2(s.viol)}</td><td class="${s.eps>0?'bad':''}">${s.eps}</td><td>${f0(s.p99)} ms</td>
+    <td><span class="bar" style="width:${(s.cost/maxC*60).toFixed(0)}px"></span>$${f1(s.cost)}</td><td class="${d!=null&&d<-1?'good':''}">${d==null?'':(d>0?'+':'')+d.toFixed(0)+' %'}</td><td>${f1(s.energy)}</td><td>${f1(s.avgI)}</td><td>${s.actions}</td></tr>`;}
+  el.innerHTML=h+'</tbody>';
+}
+function renderReadout(){
+  const k=state.focus,r=R.res[k],i=play.eng?play.i:clamp(state.win+DAY,0,M-1),u=r.u[i],pend=r.billed[i]-r.ready[i];
+  const bad=u>1,warn=u>0.9&&!bad,hy=r.pol.fb?r.pol.fb[i]:null;
+  const extra=k==='hy'?`<div>Safety nets<b>${r.pol.gd[i]?'guard ':''}${r.pol.fb[i]?'fallback':''}${!r.pol.gd[i]&&!r.pol.fb[i]?'idle':''}</b></div>`:'';
+  $('#readout').innerHTML=`<div>Time<b>${tlabel(i,true)}</b></div><div>Demand now<b>${f0(R.D[i])} MB</b></div><div>Forecast for +${state.h*5} min<b>${f0(R.pm[i])} MB</b></div>
+  <div>Policy wants<b>${r.raw[i]} instances</b></div><div>Ready / launching<b>${r.ready[i]} / ${pend}</b></div><div>Utilisation<b>${(u*100).toFixed(0)} %</b></div>
+  <div>Latency proxy<b>${f0(r.lat[i])} ms</b></div><div>Status<b><span class="badge ${bad?'bad':warn?'warn':'ok'}">${bad?'OUT OF MEMORY':warn?'near limit':'healthy'}</span></b></div>${extra}`;
+}
+function renderLab(){
+  RL=scenario(state,ALL);
+  const base=scenario(state,['pm','pu','hy','re'],{bias:0,noise:0});
+  const r=RL.res,sv=k=>r[k].sum;
+  $('#labKpis').innerHTML=[
+    [f2(RL.mapeInj)+' %','MAPE of the sabotaged forecast'],
+    [f2(sv('pm').viol)+' %','ML (mean): memory exhausted'],
+    [f2(sv('hy').viol)+' %','Hybrid: memory exhausted'],
+    [f2(sv('re').viol)+' %','Reactive: memory exhausted'],
+    [(sv('pm').cost/base.res.pm.sum.cost*100-100).toFixed(0)+' %','ML (mean) cost vs unbiased forecast'],
+    [RL.starts.length+'','surge events injected']
+  ].map(([b,t])=>`<div class="k"><b>${b}</b><span>${t}</span></div>`).join('');
+  const hyp=r.hy.pol,fbPct=100*hyp.fb.filter(Boolean).length/M,gdPct=100*hyp.gd.filter(Boolean).length/M,L=[];
+  const b=state.bias,bc=sv('pm').cost/base.res.pm.sum.cost-1;
+  if(b<0)L.push(`<b>Under-prediction (${b} %)</b> — the forecast is too low, so the ML (mean) policy provisions too little: memory is exhausted in <b>${f2(sv('pm').viol)} %</b> of steps (${sv('pm').eps} episodes). Reactive sizing is unaffected (${f2(sv('re').viol)} %). This is the dangerous direction.`);
+  else if(b>0)L.push(`<b>Over-prediction (+${b} %)</b> — the cluster is bigger than needed. ML (mean) cost rises ${(bc*100).toFixed(0)} % versus an unbiased forecast, with memory exhausted in ${f2(sv('pm').viol)} % of steps. Over-prediction wastes money but rarely hurts users.`);
+  else L.push('<b>No bias injected.</b> Move the bias slider to see how a systematically wrong forecast changes cost and safety.');
+  if(state.noise>0)L.push(`<b>Noise (σ ${state.noise} %)</b> — random forecast errors make capacity jump up and down: ML (mean) now takes ${sv('pm').actions} scaling actions (Reactive: ${sv('re').actions}); upper-bound sizing (q95) absorbs part of it.`);
+  if(state.sgn>0)L.push(`<b>${state.sgn} surge${state.sgn>1?'s':''} of +${state.sgm} %</b> — no forecaster can see these coming. New instances need ${state.boot*5} min to launch, so every policy except the oracle runs out of memory briefly (oracle: ${f2(sv('or').viol)} %). The binding constraint is launch delay, not the model.`);
+  L.push(`<b>Hybrid safety nets</b> — drift fallback was active in ${fbPct.toFixed(1)} % of steps and the emergency guard in ${gdPct.toFixed(1)} %; result: ${f2(sv('hy').viol)} % exhausted at ${(sv('hy').cost/sv('pm').cost*100-100).toFixed(0)} % ${sv('hy').cost>=sv('pm').cost?'more':'less'} cost than ML (mean).`);
+  $('#verdict').innerHTML=L.map(x=>`<li>${x}</li>`).join('');
+  const w=winRange(),capOf=k=>{const a=new Float64Array(M);for(let i=0;i<M;i++)a[i]=r[k].ready[i]*RL.cfg.inst;return a;};
+  const keys=['re','pm','pu','hy','or','st'];
+  const series=[{key:'dem',name:'Demand',color:'--c-dem',w:2.2,data:RL.D}].concat(keys.map(k=>({key:k,name:NAMES[k],color:COLORS[k],data:capOf(k),dash:k==='st'?[2,3]:null})));
+  for(const s of series)s.hidden=!!hidden.C[s.key];
+  drawChart($('#cC'),{i0:state.win,i1:Math.min(M-1,state.win+3*DAY-1),fmt:v=>f0(v)+' MB',xlab:i=>tlabel(i),series,shade:r.pm.vf});
+  legend($('#lgC'),series,hidden.C,renderLab);
+  renderTable($('#tblLab'),RL,ALL);
+  // bias sweep
+  const bs=[-40,-30,-20,-10,0,10,20,30,40],V={re:[],pm:[],pu:[],hy:[]},Cc={re:[],pm:[],pu:[],hy:[]};
+  const reS=scenario(state,['re']).res.re.sum;
+  for(const bb of bs){const s=scenario(state,['pm','pu','hy'],{bias:bb}).res;for(const k of ['pm','pu','hy']){V[k].push(s[k].sum.viol);Cc[k].push(s[k].sum.cost);}V.re.push(reS.viol);Cc.re.push(reS.cost);}
+  const mk=(D2,fmt)=>['re','pm','pu','hy'].map(k=>({key:k,name:NAMES[k],color:COLORS[k],data:D2[k],dash:k==='re'?[5,4]:null}));
+  const xt=bs.map((b2,i)=>[i,(b2>0?'+':'')+b2+' %']);
+  drawChart($('#cD'),{i0:0,i1:bs.length-1,yMin:0,fmt:v=>f1(v)+' %',xticks:xt,tipHead:i=>'bias '+(bs[i]>0?'+':'')+bs[i]+' %',series:mk(V)});
+  drawChart($('#cE'),{i0:0,i1:bs.length-1,fmt:v=>'$'+f1(v),xticks:xt,tipHead:i=>'bias '+(bs[i]>0?'+':'')+bs[i]+' %',series:mk(Cc)});
+}
+function renderAll(){R=scenario(state,ALL);renderLive();renderLab();}
+function worstMoment(){const u=(RL||R).res.pm.u;let bi=0;for(let i=0;i<M;i++)if(u[i]>u[bi])bi=i;state.win=clamp(bi-DAY,0,M-3*DAY);$('#win').value=state.win;stopPlay(true);renderAll();}
+
+/* ---------- replay ---------- */
+function stopPlay(reset){play.on=false;cancelAnimationFrame(play.raf);$('#play').innerHTML='&#9654; Replay';if(reset){play.eng=false;}}
+function tick(ts){if(!play.on)return;if(ts-play.last>45){play.last=ts;play.i=Math.min(M-1,play.i+Number($('#speed').value));renderLive();if(play.i>=M-1){stopPlay(false);return;}}play.raf=requestAnimationFrame(tick);}
+$('#play').onclick=()=>{if(play.on){stopPlay(false);return;}if(!play.eng||play.i>=M-1){play.i=state.win;}play.eng=true;play.on=true;$('#play').innerHTML='&#10074;&#10074; Pause';play.last=0;play.raf=requestAnimationFrame(tick);};
+$('#resetPlay').onclick=()=>{stopPlay(true);play.i=0;renderAll();};
+
+/* ---------- wiring ---------- */
+let pend=0;function schedule(){if(pend)return;pend=setTimeout(()=>{pend=0;renderAll();},40);}
+function bind(id,fn){$(id).addEventListener('input',()=>{fn();schedule();});}
+bind('#horizon',()=>state.h=Number($('#horizon').value));
+bind('#tu',()=>{state.tu=Number($('#tu').value)/100;$('#tuO').textContent=$('#tu').value+' %';});
+bind('#boot',()=>state.boot=Number($('#boot').value));
+bind('#inst',()=>state.inst=Number($('#inst').value));
+bind('#seed',()=>state.seed=clamp(Math.round(Number($('#seed').value)||7),1,9999));
+$('#reseed').onclick=()=>{state.seed=1+Math.floor(Math.random()*9998);$('#seed').value=state.seed;schedule();};
+$('#win').max=M-3*DAY;$('#win').step=36;
+$('#win').addEventListener('input',()=>{stopPlay(true);state.win=Number($('#win').value);renderLive();if(state.tab==='lab')renderLab();});
+$('#focus').addEventListener('input',()=>{state.focus=$('#focus').value;renderLive();});
+bind('#bias',()=>{state.bias=Number($('#bias').value);$('#biasO').textContent=(state.bias>0?'+':'')+state.bias+' %';});
+bind('#noise',()=>{state.noise=Number($('#noise').value);$('#noiseO').textContent=state.noise+' %';});
+bind('#sgn',()=>{state.sgn=Number($('#sgn').value);$('#sgnO').textContent=state.sgn;});
+bind('#sgm',()=>{state.sgm=Number($('#sgm').value);$('#sgmO').textContent='+'+state.sgm+' %';});
+const PRE={under:{bias:-20,noise:0,sgn:0},over:{bias:40,noise:0,sgn:0},noisy:{bias:0,noise:15,sgn:0},surge:{bias:0,noise:0,sgn:4,sgm:50},reset:{bias:0,noise:0,sgn:0,sgm:40}};
+document.querySelectorAll('[data-pre]').forEach(b=>b.onclick=()=>{Object.assign(state,PRE[b.dataset.pre]);
+  $('#bias').value=state.bias;$('#noise').value=state.noise;$('#sgn').value=state.sgn;$('#sgm').value=state.sgm;
+  $('#biasO').textContent=(state.bias>0?'+':'')+state.bias+' %';$('#noiseO').textContent=state.noise+' %';$('#sgnO').textContent=state.sgn;$('#sgmO').textContent='+'+state.sgm+' %';
+  stopPlay(true);schedule();if(b.dataset.pre!=='reset')setTimeout(worstMoment,80);});
+$('#worst').onclick=worstMoment;
+const TABS=['live','lab','repo','design'];
+function showTab(n){if(!TABS.includes(n))n='live';state.tab=n;TABS.forEach(t=>{const on=t===n;$('#t-'+t).setAttribute('aria-selected',on);$('#tab-'+t).classList.toggle('on',on);});
+  if(n==='live'||n==='lab')renderAll();}
+TABS.forEach(t=>$('#t-'+t).onclick=()=>{history.replaceState(null,'','#'+t);showTab(t);});
+['#cA','#cB','#cC','#cD','#cE'].forEach(id=>attachHover($(id)));
+window.addEventListener('resize',()=>{renderAll();});
+matchMedia('(prefers-color-scheme: dark)').addEventListener('change',()=>renderAll());
+state.win=DAY;$('#win').value=state.win;
+showTab(location.hash.replace('#','')||'live');
+window.__demo={state,scenario,model,workload,ALL,get R(){return R;},get RL(){return RL;},M,DAY};
+</script>
+</body></html>
